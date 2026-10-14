@@ -32,7 +32,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.11.1'
+          gradle-version: '8.14.3'
 
       - name: Verify project
         run: |
@@ -50,7 +50,7 @@ jobs:
 
       - name: Generate Gradle wrapper
         working-directory: android
-        run: gradle wrapper --gradle-version 8.11.1
+        run: gradle wrapper --gradle-version 8.14.3
 
       - name: Get Flutter dependencies
         run: flutter pub get
