@@ -4,7 +4,8 @@ name: Build VYBE 3D Android APK
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -52,7 +53,7 @@ jobs:
         working-directory: android
         run: gradle wrapper --gradle-version 8.14.3
 
-           - name: Get Flutter dependencies
+      - name: Get Flutter dependencies
         run: flutter pub get
 
       - name: Fix audio_query Android namespace
@@ -64,10 +65,11 @@ jobs:
               sed -i '/^android[[:space:]]*{/a\    namespace "com.avinash.on_audio_query"' "$PLUGIN_DIR/build.gradle"
             fi
           else
-            echo "audio_query_android build.gradle not found at $PLUGIN_DIR"
+            echo "audio_query_android build.gradle not found"
             find "$HOME/.pub-cache" -path '*/audio_query_android-*/android/build.gradle' -print
             exit 1
           fi
+
       - name: Build debug APK
         run: flutter build apk --debug
 
