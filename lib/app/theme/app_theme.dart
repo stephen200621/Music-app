@@ -36,7 +36,7 @@ class AppTheme {
         titleTextStyle: AppTypography.screenTitle,
         iconTheme: const IconThemeData(color: AppColors.mainText),
       ),
-      cardTheme: CardTheme(
+     cardTheme: CardThemeData(
         color: AppColors.elevatedSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -68,7 +68,7 @@ class AppTheme {
         thickness: 1,
         space: 1,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: AppColors.secondaryBackground,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
