@@ -19,8 +19,7 @@ Future<void> main() async {
         androidNotificationChannelDescription: 'Background audio playback controls and metadata',
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
-        androidEnableQueue: true,
-      ),
+             ),
     );
     AudioPlayerService.instance.initialize(handler);
   } catch (e) {
