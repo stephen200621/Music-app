@@ -57,20 +57,27 @@ jobs:
         run: flutter pub get
 
       
+     
       - name: Fix audio_query Android namespace
         shell: bash
         run: |
-          PLUGIN_FILE=$(find "$HOME/.pub-cache" -path '*/audio_query_android-*/android/build.gradle' -print -quit)
+          PLUGIN_DIR=$(find "$HOME/.pub-cache" -type d -path '*/audio_query_android-*/android' -print -quit)
 
-          if [ -z "$PLUGIN_FILE" ]; then
-            PLUGIN_FILE=$(find "$HOME/.pub-cache" -path '*/audio_query_android-*/android/build.gradle.kts' -print -quit)
-          fi
-
-          if [ -z "$PLUGIN_FILE" ]; then
-            echo "Could not find audio_query_android Gradle file."
-            find "$HOME" -path '*audio_query_android*' -print 2>/dev/null | head -50
+          if [ -z "$PLUGIN_DIR" ]; then
+            echo "audio_query Android plugin directory not found"
             exit 1
           fi
+
+          echo "Plugin directory: $PLUGIN_DIR"
+
+          if grep -q 'namespace' "$PLUGIN_DIR/build.gradle"; then
+            echo "Namespace already exists"
+          else
+            sed -i '/android[[:space:]]*{/a\    namespace "com.lucasjosino.on_audio_query"' "$PLUGIN_DIR/build.gradle"
+          fi
+
+          grep -n 'namespace' "$PLUGIN_DIR/build.gradle"
+
 
           echo "Found plugin file: $PLUGIN_FILE"
 
