@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.vybe3d.musicplayer"
-    compileSdkVersion 34
+    compileSdkVersion 36
     ndkVersion flutter.ndkVersion
 
     compileOptions {
