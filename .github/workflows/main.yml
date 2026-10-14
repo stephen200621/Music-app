@@ -58,34 +58,31 @@ jobs:
 
       
      
+      
       - name: Fix audio_query Android namespace
         shell: bash
         run: |
-          PLUGIN_DIR=$(find "$HOME/.pub-cache" -type d -path '*/audio_query_android-*/android' -print -quit)
+          PLUGIN_DIR=$(find "$HOME/.pub-cache" -type d -path '*/on_audio_query_android-*/android' -print -quit)
 
           if [ -z "$PLUGIN_DIR" ]; then
-            echo "audio_query Android plugin directory not found"
+            echo "Plugin directory not found. Searching Flutter package cache:"
+            find "$HOME/.pub-cache" -iname '*audio*query*' -print | head -50
             exit 1
           fi
 
           echo "Plugin directory: $PLUGIN_DIR"
+          GRADLE_FILE="$PLUGIN_DIR/build.gradle"
 
-          if grep -q 'namespace' "$PLUGIN_DIR/build.gradle"; then
-            echo "Namespace already exists"
-          else
-            sed -i '/android[[:space:]]*{/a\    namespace "com.lucasjosino.on_audio_query"' "$PLUGIN_DIR/build.gradle"
+          if [ ! -f "$GRADLE_FILE" ]; then
+            echo "Plugin Gradle file not found: $GRADLE_FILE"
+            exit 1
           fi
 
-          grep -n 'namespace' "$PLUGIN_DIR/build.gradle"
-
-
-          echo "Found plugin file: $PLUGIN_FILE"
-
-          if ! grep -q 'namespace' "$PLUGIN_FILE"; then
-            sed -i '/^[[:space:]]*android[[:space:]]*{/a\    namespace "com.avinash.on_audio_query"' "$PLUGIN_FILE"
+          if ! grep -q 'namespace' "$GRADLE_FILE"; then
+            sed -i '/android[[:space:]]*{/a\    namespace "com.lucasjosino.on_audio_query"' "$GRADLE_FILE"
           fi
 
-          grep -n 'namespace' "$PLUGIN_FILE"
+          grep -n 'namespace' "$GRADLE_FILE"
 
 
       - name: Build debug APK
